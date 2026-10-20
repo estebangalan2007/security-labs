@@ -1,6 +1,6 @@
 # DarkHole 2
 
-| | |
+| Campo | Valor |
 |---|---|
 | **Plataforma** | VulnHub |
 | **Sistema** | Ubuntu 20.04 LTS · Apache 2.4.41 · MySQL 8 |
@@ -8,8 +8,8 @@
 | **Fecha** | 2026-10-14 |
 | **Tiempo** | ~18 minutos de grabación |
 
-**Técnicas:** T1213 · T1552.001 · T1552.003 · T1078 · T1190 · T1505.003 · T1059.004 · T1548.003 · T1059.006
-**Flags:** usuario `DarkHole{'This_is_the_life_man_better_than_a_cruise'}` · root `DarkHole{'Legend'}`
+- **Técnicas:** T1213 · T1552.001 · T1552.003 · T1078 · T1190 · T1505.003 · T1059.004 · T1548.003 · T1059.006
+- **Flags:** usuario `DarkHole{'This_is_the_life_man_better_than_a_cruise'}` · root `DarkHole{'Legend'}`
 
 > Las credenciales concretas del reto se omiten a propósito. La máquina es pública y está retirada;
 > quien quiera reproducirla las obtiene con el procedimiento descrito.
