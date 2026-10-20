@@ -1,10 +1,9 @@
-# security-labs
+# Labs y SOC
 
 Documentación de laboratorios de pentesting y de proyectos de detección y SOC.
 Todo el contenido se ha ejecutado en **entornos propios de práctica** (VulnHub y laboratorio
-local). No hay datos de clientes, ni IPs reales, ni credenciales de producción.
-
-**Web:** https://estebangalan2007.github.io/security-labs/ · **Repo:** https://github.com/estebangalan2007/security-labs
+local). No hay datos de clientes. En los writeups sí aparecen la IP y las credenciales de la
+máquina del reto: son laboratorios públicos y retirados, y sin ellas el writeup no sirve.
 
 ## Por qué existe
 
