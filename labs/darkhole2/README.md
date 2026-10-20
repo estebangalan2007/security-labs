@@ -65,10 +65,13 @@ por defecto escritos en el código**. No hay que romper nada: la llave está pub
 
 ## Acceso al panel
 
-Con las credenciales que aparecen en la captura anterior se entra en el panel de administración. El
-formulario de login construye la consulta concatenando lo que llega, así que es inyectable.
+Con las credenciales que aparecen en la captura anterior se entra en el panel. El formulario
+construye la consulta concatenando lo que llega, así que la inyección se prueba directamente sobre
+un campo del perfil y responde con el resultado de la consulta:
 
-- Petición capturada con **Burp Suite** para reutilizarla.
+![Prueba de inyección en el panel: ' OR 1=1 UNION SELECT 1, VERSION()#](evidencia/sqli-panel.png)
+
+- Petición capturada con **Burp Suite** para reutilizarla en sqlmap.
 - Técnica: T1190 · Exploit Public-Facing Application.
 
 ## El volcado
