@@ -10,15 +10,31 @@ máquina del reto: son laboratorios públicos y retirados, y sin ellas el writeu
 Escribo cada laboratorio una vez y de ahí salen tres cosas: el histórico de git, esta web y las
 piezas de contenido. Documentar es el principio de la cadena, no el final.
 
-## Labs
+## Labs y proyectos
 
-| Máquina | Plataforma | Dificultad | Técnicas | Writeup |
-|---|---|---|---|---|
-| DarkHole 2 | VulnHub | media | T1213 · T1552.001 · T1078 · T1190 · T1505.003 · T1548.003 | [labs/darkhole2](labs/darkhole2/) |
-
-## Proyectos SOC
-
-- [wazuh-n8n-thehive](soc/wazuh-n8n-thehive/) — flujo de alerta: Wazuh → n8n → TheHive, con triaje y playbooks.
+<div class="cards">
+  <a class="card" href="labs/darkhole2/">
+    <span class="tag">Lab · VulnHub</span>
+    <h3>DarkHole 2</h3>
+    <p>Del repositorio <code>.git</code> expuesto a root: credenciales en el historial, inyección SQL,
+    reverse shell y <code>sudo</code> sobre Python.</p>
+    <span class="meta">Ubuntu 20.04 · dificultad media · 10 pasos <span class="go">→</span></span>
+  </a>
+  <a class="card" href="soc/wazuh-n8n-thehive/">
+    <span class="tag">SOC · Detección</span>
+    <h3>Wazuh → n8n → TheHive</h3>
+    <p>Flujo de alerta completo: validación, enriquecimiento, deduplicación y apertura de caso, con
+    reglas probadas y playbook de triaje.</p>
+    <span class="meta">Arquitectura · reglas · runbook <span class="go">→</span></span>
+  </a>
+  <a class="card" href="plantillas/writeup.html">
+    <span class="tag">Plantillas</span>
+    <h3>Writeup, informe y runbook</h3>
+    <p>Tres esqueletos listos: writeup de laboratorio, informe de pentest con CVSS y CWE, y runbook
+    de triaje para el SOC.</p>
+    <span class="meta">Reutilizables · en Markdown <span class="go">→</span></span>
+  </a>
+</div>
 
 ## Estructura
 
