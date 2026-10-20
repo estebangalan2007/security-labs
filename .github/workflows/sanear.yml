@@ -1,0 +1,16 @@
+name: saneador
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  secretos:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Buscar secretos y datos sensibles
+        run: python3 herramientas/sanear.py --check .
