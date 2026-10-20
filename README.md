@@ -13,6 +13,13 @@ piezas de contenido. Documentar es el principio de la cadena, no el final.
 ## Labs y proyectos
 
 <div class="cards">
+  <a class="card" href="labs/basic2/">
+    <span class="tag">Lab · VulnHub</span>
+    <h3>Basic Pentesting 2</h3>
+    <p>Un directorio de desarrollo publica las notas del equipo y SMB acepta conexiones anónimas:
+    dos usuarios, una clave privada legible y root por diccionario.</p>
+    <span class="meta">Ubuntu 16.04 · principiante · mi primer lab <span class="go">→</span></span>
+  </a>
   <a class="card" href="labs/darkhole2/">
     <span class="tag">Lab · VulnHub</span>
     <h3>DarkHole 2</h3>
