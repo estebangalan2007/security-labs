@@ -1,8 +1,21 @@
 title: "Labs y SOC · Esteban Serrata"
 description: "Writeups de laboratorios de pentesting y proyectos de detección y SOC"
-theme: jekyll-theme-cayman
-show_downloads: false
+lang: es
+
+# diseño propio en _layouts/default.html + assets/css/style.css
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "default"
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
 exclude:
   - herramientas/
   - .github/
   - LICENSE
+  - .sanear-allow

@@ -1,0 +1,116 @@
+/* Diseño del sitio: oscuro, con el marcador ámbar de la marca. */
+
+:root{
+  --bg:#080A0D;
+  --bg-soft:#0E1216;
+  --surface:#11161C;
+  --line:#1F2830;
+  --line-soft:#18202700;
+  --ink:#EFF5F8;
+  --soft:#C3D0D8;
+  --muted:#8A9AA6;
+  --accent:#F97316;
+  --accent-bright:#FB923C;
+  --accent-soft:#FED7AA;
+  --cyan:#22D3EE;
+  --code-bg:#0A0E12;
+  --radius:10px;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Inter",system-ui,-apple-system,sans-serif;
+  font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;
+  background-image:
+    radial-gradient(900px 420px at 50% -180px, rgba(249,115,22,.16), transparent 70%),
+    linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px);
+  background-size:auto, 64px 64px, 64px 64px;
+}
+.wrap{width:100%;max-width:900px;margin:0 auto;padding:0 24px}
+
+/* ---------- cabecera ---------- */
+.top{position:sticky;top:0;z-index:20;background:rgba(8,10,13,.86);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top-in{display:flex;align-items:center;justify-content:space-between;height:72px;gap:20px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.mark{width:40px;height:40px;display:grid;place-items:center;border-radius:10px;
+  background:var(--accent);color:#160C05;font-family:"Anton",sans-serif;font-size:20px}
+.brand-txt{display:flex;flex-direction:column;line-height:1.15}
+.brand-txt strong{font-family:"Barlow Condensed",sans-serif;font-weight:700;letter-spacing:2.4px;
+  text-transform:uppercase;font-size:16px}
+.brand-txt em{font-style:normal;font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--muted)}
+.nav{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.nav a{font-family:"Barlow Condensed",sans-serif;font-weight:600;letter-spacing:2px;
+  text-transform:uppercase;font-size:14px;color:var(--soft);text-decoration:none;transition:.15s}
+.nav a:hover{color:var(--accent-bright)}
+.nav .gh{border:1px solid var(--line);border-radius:999px;padding:7px 14px;color:var(--accent-soft)}
+.nav .gh:hover{border-color:var(--accent);background:rgba(249,115,22,.10)}
+
+/* ---------- contenido ---------- */
+main{padding:56px 0 40px}
+h1{font-family:"Anton",sans-serif;font-weight:400;text-transform:uppercase;
+  font-size:clamp(38px,6vw,62px);line-height:1.02;letter-spacing:-.5px;margin:0 0 14px}
+h1::after{content:"";display:block;width:74px;height:5px;margin-top:20px;
+  background:linear-gradient(90deg,var(--accent),transparent);border-radius:3px}
+h2{font-family:"Anton",sans-serif;font-weight:400;text-transform:uppercase;
+  font-size:clamp(22px,3.4vw,30px);line-height:1.15;letter-spacing:0;margin:56px 0 14px;
+  padding-top:26px;border-top:1px solid var(--line)}
+h3{font-family:"Barlow Condensed",sans-serif;font-weight:700;text-transform:uppercase;
+  letter-spacing:1.6px;font-size:20px;margin:32px 0 8px;color:var(--accent-soft)}
+p,li{color:var(--soft)}
+p{margin:0 0 18px}
+strong{color:var(--ink)}
+a{color:var(--accent-bright);text-decoration:none;border-bottom:1px solid rgba(249,115,22,.35)}
+a:hover{color:#fff;border-bottom-color:var(--accent)}
+ul,ol{padding-left:22px;margin:0 0 20px}
+li{margin:6px 0}
+li::marker{color:var(--accent)}
+hr{border:0;border-top:1px solid var(--line);margin:40px 0}
+
+/* ---------- código ---------- */
+code{font-family:"JetBrains Mono",monospace;font-size:.88em;color:var(--accent-soft);
+  background:rgba(249,115,22,.10);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border:1px solid var(--line);border-left:4px solid var(--accent);
+  border-radius:var(--radius);padding:18px 20px;overflow-x:auto;margin:22px 0}
+pre code{background:none;padding:0;color:#DCE7EC;font-size:14.5px;line-height:1.65}
+
+/* ---------- tablas ---------- */
+table{width:100%;border-collapse:collapse;margin:24px 0;font-size:16px;
+  border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+thead th{background:rgba(249,115,22,.12);color:var(--accent-soft);
+  font-family:"Barlow Condensed",sans-serif;font-weight:700;letter-spacing:1.6px;
+  text-transform:uppercase;font-size:14px;text-align:left}
+th,td{padding:12px 14px;border-bottom:1px solid var(--line)}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:rgba(255,255,255,.03)}
+td{color:var(--soft)}
+
+/* ---------- imágenes / citas ---------- */
+img{max-width:100%;height:auto;display:block;margin:22px 0;border-radius:var(--radius);
+  border:1px solid var(--line);background:#000}
+p:has(> img){margin:26px 0}
+blockquote{margin:26px 0;padding:16px 20px;border-left:4px solid var(--cyan);
+  background:rgba(34,211,238,.07);border-radius:0 var(--radius) var(--radius) 0}
+blockquote p{margin:0;color:#D6EEF4}
+blockquote em,blockquote strong{color:#EAF9FC}
+
+/* ---------- portada: enlaces de índice ---------- */
+main ul li a{font-weight:500}
+
+/* ---------- pie ---------- */
+.foot{border-top:1px solid var(--line);margin-top:64px;padding:28px 0 44px;
+  background:rgba(255,255,255,.015)}
+.foot-in{display:flex;flex-direction:column;gap:6px}
+.foot p{margin:0;font-size:14.5px;color:var(--muted)}
+.foot .mono{font-family:"JetBrains Mono",monospace;font-size:12.5px;color:#5D6E7A}
+
+@media (max-width:640px){
+  .top-in{height:auto;padding:14px 0;flex-direction:column;align-items:flex-start;gap:12px}
+  .nav{gap:14px}
+  main{padding:34px 0 24px}
+  body{font-size:16px}
+  h2{margin-top:40px}
+}
