@@ -57,11 +57,20 @@ smb: \> get staff.txt
 
 ## Acceso inicial
 
-Con los dos nombres de usuario y el aviso de claves débiles, ataque de diccionario contra SSH hasta
-dar con una cuenta válida:
+Con los dos nombres de usuario y el aviso de claves débiles, diccionario contra SSH:
 
-- Técnica: T1110.001 · Password Guessing.
-- Sesión como usuario sin privilegios.
+```bash
+hydra -l jan -P /usr/share/wordlists/rockyou.txt ssh://<IP-objetivo>
+```
+
+Hydra encuentra la contraseña de `jan` en el primer minuto de ataque y la deja en pantalla:
+
+![hydra: comando, ataque y la línea con el usuario y la contraseña encontrados](evidencia/hydra.png)
+
+Ya dentro, `sudo -l` responde que `jan` no puede ejecutar nada como root: la cuenta sirve para
+entrar, no para escalar.
+
+- Técnicas: T1110.001 · Password Guessing · T1078 · Valid Accounts.
 
 ## El atajo que no era el camino
 
