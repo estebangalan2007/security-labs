@@ -155,8 +155,9 @@ ahí. Para escalar hay que abrir una sesión SSH real con la cuenta de `losy`, y
 en el historial de comandos del sistema (`.bash_history`): alguien ejecutó un comando con la
 contraseña a la vista y quedó guardada en el fichero.
 
-> Ese momento no aparece en la grabación, así que no hay captura de él: lo cuento porque fue parte
-> del camino. La sesión posterior, ya como `losy`, sí se ve en las capturas del `sudo -l`.
+> El `cat` del historial no aparece en la grabación, así que no hay captura de ese momento: lo
+> cuento porque fue parte del camino. **La escalada completa sí está grabada** y son las dos
+> capturas siguientes: el `sudo -l` que autoriza Python (1:46) y la sesión de root con la flag (1:49).
 
 ```bash
 ssh losy@<IP-objetivo>
