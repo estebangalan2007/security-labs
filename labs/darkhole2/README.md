@@ -150,7 +150,17 @@ Dentro, el usuario es `losy` y su flag está en el directorio personal:
 
 ## Escalada de privilegios
 
+La shell de la reverse no es una terminal completa: no hay TTY, así que `sudo` no funciona desde
+ahí. Para escalar hay que abrir una sesión SSH real con la cuenta de `losy`, y su contraseña estaba
+en el historial de comandos del sistema (`.bash_history`): alguien ejecutó un comando con la
+contraseña a la vista y quedó guardada en el fichero.
+
+> Ese momento no aparece en la grabación, así que no hay captura de él: lo cuento porque fue parte
+> del camino. La sesión posterior, ya como `losy`, sí se ve en las capturas del `sudo -l`.
+
 ```bash
+ssh losy@<IP-objetivo>
+
 sudo -l
 # User losy may run the following commands on darkhole:
 #     (root) /usr/bin/python3
