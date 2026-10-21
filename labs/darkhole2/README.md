@@ -151,10 +151,11 @@ Dentro, el usuario es `losy` y su flag está en el directorio personal:
 ## Escalada de privilegios
 
 La shell de la reverse no es una terminal completa: no hay TTY, así que `sudo` no funciona desde
-ahí. Para escalar hay que abrir una sesión SSH real con `losy`, y el **historial de comandos** del
-sistema dejaba a la vista la ruta: `sudo python3 -c 'import os; os.system("/bin/sh")'` y `sudo su`.
+ahí. Para escalar hay que abrir una sesión SSH real con `losy`, y la contraseña de esa cuenta estaba
+escrita a mano en el **historial de comandos** del sistema. Ese mismo historial deja a la vista la
+ruta: `sudo su` y `sudo python3 -c 'import os; os.system("/bin/sh")'`.
 
-![El historial de comandos: la contraseña y la ruta de escalada, a la vista](evidencia/historial-bash.png)
+![El historial de comandos: la contraseña escrita a mano y la ruta de escalada](evidencia/historial-bash.png)
 
 ```bash
 ssh losy@<IP-objetivo>
