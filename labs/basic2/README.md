@@ -111,8 +111,8 @@ ls -la /home/kay/.ssh
 
 ![Permisos de la clave: lectura para todos](evidencia/ssh-keys-permisos.png)
 
-La clave está cifrada, así que se convierte al formato de john y se ataca su frase de paso con un
-diccionario:
+La clave está cifrada, así que se convierte al formato de john y se ataca su frase de paso con la
+lista que trae john por defecto:
 
 ```bash
 ssh2john id_rsa > ssh2john
