@@ -26,6 +26,13 @@ Por el camino intenté un exploit de Struts que no llegó a ejecutarse. No era e
 
 ## Reconocimiento
 
+Primero hay que encontrar la máquina: un barrido ARP visto en **Wireshark** delata la IP del
+objetivo en la red del laboratorio.
+
+![Barrido ARP en Wireshark: el objetivo aparece en la red](evidencia/wireshark-arp.png)
+
+Después, escaneo de puertos y versiones:
+
 ```bash
 nmap -sC -sV -p- <IP-objetivo>
 ```
@@ -43,7 +50,17 @@ Dos hallazgos que lo cambian todo:
    Struts 2.5.12, el orden en que se montó el servidor y va firmado con iniciales (`-K`, `-J`),
    que son los dos usuarios del sistema.
 2. **Un recurso compartido SMB anónimo** que entrega un `staff.txt` con la plantilla y el aviso de
-   que las contraseñas son débiles.
+   que las contraseñas son débiles. Lo saca `enum4linux`: entre los recursos aparece `Anonymous` y
+   el servidor se identifica como `BASIC2`.
+
+```bash
+enum4linux -a <IP-objetivo>
+# Sharename   Type   Comment
+# Anonymous   Disk
+# Server: BASIC2
+```
+
+![enum4linux: el recurso Anonymous y el servidor identificado como BASIC2](evidencia/enum4linux.png)
 
 ![Notas internas del equipo en el directorio de desarrollo](evidencia/notes-development.png)
 
@@ -74,8 +91,8 @@ entrar, no para escalar.
 
 ## El atajo que no era el camino
 
-Antes de eso probé el exploit público de Struts que sugerían las notas: se descargó, no tenía
-permisos de ejecución y no llegó a arrancar.
+Con la sesión de `jan` ya abierta probé el exploit público de Struts que sugerían las notas: se
+descargó, no tenía permisos de ejecución y no llegó a arrancar.
 
 ![El atajo: descargado, sin permisos de ejecución y sin resultado](evidencia/exploit-fallido.png)
 
@@ -98,23 +115,36 @@ La clave está cifrada, así que se convierte al formato de john y se ataca su f
 diccionario:
 
 ```bash
-ssh2john id_rsa > id_rsa.hash
-john --wordlist=<diccionario> id_rsa.hash
+ssh2john id_rsa > ssh2john
+john ssh2john
+# Proceeding with wordlist:/usr/share/john/password.lst
 ```
 
 ![Conversión de la clave con ssh2john](evidencia/ssh2john.png)
 
-![john contra la frase de paso de la clave](evidencia/john-passphrase.png)
+John la resuelve con su lista por defecto en **menos de ocho minutos** y deja la frase de paso en
+pantalla:
+
+![john: la frase de paso de la clave, encontrada y marcada como DONE](evidencia/john-resultado.png)
 
 - Técnicas: T1552.004 · Private Keys · T1110.002 · Password Cracking.
 
 ## Escalada
 
-Ya como la segunda cuenta, su directorio personal guarda un respaldo con la contraseña
-(`pass.bak`), y esa cuenta puede usar `sudo`:
+Con esa frase de paso se entra con la clave robada, sin conocer la contraseña de la cuenta:
 
 ```bash
-cat pass.bak        # contraseña de la cuenta
+ssh -i id_rsa kay@<IP-objetivo>
+```
+
+![Entrada con la clave de kay, sudo -l y el respaldo pass.bak en su directorio](evidencia/ssh-kay.png)
+
+Ya dentro, `sudo -l` confirma que puede usar `sudo`, y su directorio personal guarda
+un respaldo con la contraseña (`pass.bak`), legible solo por ella:
+
+```bash
+sudo -l              # pide la contraseña de kay
+cat pass.bak         # el respaldo con esa contraseña
 sudo su
 # root@basic2:~#
 ```
